@@ -19,10 +19,20 @@
 ##################################################################################
 
 import sys
+import calendar
+from datetime import date
+from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlApplicationEngine
+from PyQt5.QtQml import QQmlEngine, QQmlComponent
 
 if __name__ == "__main__":
+    currentMonth = calendar.monthcalendar(date.today().year, date.today().month)
+
     app = QApplication(sys.argv)
-    engine = QQmlApplicationEngine("MainWindow.qml")
+    engine = QQmlEngine()
+    windowComponent = QQmlComponent(engine)
+    windowComponent.loadUrl(QUrl("MainWindow.qml"))
+
+    window = windowComponent.create()
+    window.show()
     app.exec()

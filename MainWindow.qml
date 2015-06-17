@@ -17,6 +17,7 @@
  *********************************************************************************/
 
 import QtQuick 2.4
+import QtQml.Models 2.1
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.3
@@ -24,7 +25,20 @@ import QtQuick.Controls 1.3
 ApplicationWindow {
     id: window
     visible: true
-    visibility: "Maximized"
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight
+
+    ListModel {
+        id: calendarModel
+
+        ListElement { name: "Monday" }
+        ListElement { name: "Tuesday" }
+        ListElement { name: "Wednesday" }
+        ListElement { name: "Thursday" }
+        ListElement { name: "Friday" }
+        ListElement { name: "Saturday" }
+        ListElement { name: "Sunday" }
+    }
 
     toolBar: PoolBar { }
 
@@ -36,7 +50,22 @@ ApplicationWindow {
             id: calendarPanel
             width: Screen.desktopAvailableWidth / 1.3
             Layout.minimumWidth: Screen.desktopAvailableWidth / 2
-            color: "gray"
+            color: "grey"
+
+            GridView {
+                anchors.fill: parent
+                model: calendarModel
+
+                delegate: Rectangle {
+                    width: calendarPanel.width / calendarModel.count
+                    height: calendarPanel.height / calendarModel.count
+                    color: "lightblue"
+
+                    Text {
+                        text: modelData
+                    }
+                }
+            }
         }
 
         Rectangle {
