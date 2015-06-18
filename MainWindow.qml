@@ -1,20 +1,20 @@
 /*************************** Copyrights and License ******************************
- *                                                                                *
- * This file is part of Paion. http://github.com/JamesWrigley/paion/              *
- *                                                                                *
- * Paion is free software: you can redistribute it and/or modify it under         *
- * the terms of the GNU General Public License as published by the Free Software  *
- * Foundation, either version 3 of the License, or (at your option) any later     *
- * version.                                                                       *
- *                                                                                *
- * Paion is distributed in the hope that it will be useful, but WITHOUT ANY       *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS      *
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. *
- *                                                                                *
- * You should have received a copy of the GNU General Public License along with   *
- * Paion. If not, see <http://www.gnu.org/licenses/>.                             *
- *                                                                                *
- *********************************************************************************/
+*                                                                                *
+* This file is part of Paion. http://github.com/JamesWrigley/paion/              *
+*                                                                                *
+* Paion is free software: you can redistribute it and/or modify it under         *
+* the terms of the GNU General Public License as published by the Free Software  *
+* Foundation, either version 3 of the License, or (at your option) any later     *
+* version.                                                                       *
+*                                                                                *
+* Paion is distributed in the hope that it will be useful, but WITHOUT ANY       *
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS      *
+* FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. *
+*                                                                                *
+* You should have received a copy of the GNU General Public License along with   *
+* Paion. If not, see <http://www.gnu.org/licenses/>.                             *
+*                                                                                *
+*********************************************************************************/
 
 import QtQuick 2.4
 import QtQml.Models 2.1
@@ -53,15 +53,21 @@ ApplicationWindow {
             color: "grey"
 
             GridView {
+                id: calendarView
                 anchors.fill: parent
                 model: calendarModel
 
+                cellWidth: calendarPanel.width / 7
+                cellHeight: calendarPanel.height / 4
+
                 delegate: Rectangle {
-                    width: calendarPanel.width / calendarModel.count
-                    height: calendarPanel.height / calendarModel.count
+                    width: calendarView.cellWidth - 2 // calendarPanel.width / calendarModel.count + 1
+                    height: calendarView.cellHeight - 2 // calendarPanel.height / calendarModel.count + 1
+                    border.width: 2
                     color: "lightblue"
 
                     Text {
+                        anchors.centerIn: parent
                         text: modelData
                     }
                 }
