@@ -28,25 +28,6 @@ ApplicationWindow {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
 
-    // Yes, yes, inaccurate I know
-    ListModel {
-        id: calendarModel
-
-        ListElement { name: "Monday" }
-        ListElement { name: "Tuesday" }
-        ListElement { name: "Wednesday" }
-        ListElement { name: "Thursday" }
-        ListElement { name: "Friday" }
-        ListElement { name: "Saturday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-        ListElement { name: "Sunday" }
-    }
-
     ListModel {
         id: daysModel
 
@@ -76,6 +57,7 @@ ApplicationWindow {
                 spacing: 5
 
                 ListView {
+                    z: 1 // Force this to be drawn on top
                     id: daysView
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -108,17 +90,17 @@ ApplicationWindow {
                     model: calendarModel
 
                     cellWidth: calendarPanel.width / 7
-                    cellHeight: calendarPanel.height / 4
+                    cellHeight: calendarPanel.height / 5
 
                     delegate: Rectangle {
                         width: calendarView.cellWidth - 2
                         height: calendarView.cellHeight - 2
-                        border.width: 2
-                        color: "lightblue"
+                        border.width: modelData === 0 ? 1 : 2
+                        color: modelData === 0 ? "#ABABAB" : "lightblue"
 
                         Text {
                             anchors.centerIn: parent
-                            text: modelData
+                            text: modelData === 0 ? "" : modelData
                         }
                     }
                 }

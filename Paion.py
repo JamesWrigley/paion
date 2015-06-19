@@ -26,13 +26,14 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlEngine, QQmlComponent
 
 if __name__ == "__main__":
-    currentMonth = calendar.monthcalendar(date.today().year, date.today().month)
+    # Get a list of weeks containing a list of days, and flatten it
+    currentMonth = [day for week in calendar.monthcalendar(date.today().year, date.today().month) for day in week]
 
     app = QApplication(sys.argv)
     engine = QQmlEngine()
+    engine.rootContext().setContextProperty("calendarModel", currentMonth)
     windowComponent = QQmlComponent(engine)
     windowComponent.loadUrl(QUrl("MainWindow.qml"))
-
     window = windowComponent.create()
     window.show()
     app.exec()
