@@ -28,8 +28,27 @@ ApplicationWindow {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
 
+    // Yes, yes, inaccurate I know
     ListModel {
         id: calendarModel
+
+        ListElement { name: "Monday" }
+        ListElement { name: "Tuesday" }
+        ListElement { name: "Wednesday" }
+        ListElement { name: "Thursday" }
+        ListElement { name: "Friday" }
+        ListElement { name: "Saturday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+        ListElement { name: "Sunday" }
+    }
+
+    ListModel {
+        id: daysModel
 
         ListElement { name: "Monday" }
         ListElement { name: "Tuesday" }
@@ -52,23 +71,55 @@ ApplicationWindow {
             Layout.minimumWidth: Screen.desktopAvailableWidth / 2
             color: "grey"
 
-            GridView {
-                id: calendarView
+            ColumnLayout {
                 anchors.fill: parent
-                model: calendarModel
+                spacing: 5
 
-                cellWidth: calendarPanel.width / 7
-                cellHeight: calendarPanel.height / 4
+                ListView {
+                    id: daysView
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 30
+                    model: daysModel
+                    Layout.alignment: Qt.AlignTop
+                    orientation: "Horizontal"
 
-                delegate: Rectangle {
-                    width: calendarView.cellWidth - 2 // calendarPanel.width / calendarModel.count + 1
-                    height: calendarView.cellHeight - 2 // calendarPanel.height / calendarModel.count + 1
-                    border.width: 2
-                    color: "lightblue"
+                    delegate: Rectangle {
+                        width: (calendarPanel.width / 7)
+                        height: parent.height
+                        border.width: 1
+                        color: "#007880"
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: modelData
+                        Text {
+                            anchors.centerIn: parent
+                            text: modelData
+                            color: "white"
+                        }
+                    }
+                }
+
+                GridView {
+                    id: calendarView
+                    anchors.top: daysView.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    model: calendarModel
+
+                    cellWidth: calendarPanel.width / 7
+                    cellHeight: calendarPanel.height / 4
+
+                    delegate: Rectangle {
+                        width: calendarView.cellWidth - 2
+                        height: calendarView.cellHeight - 2
+                        border.width: 2
+                        color: "lightblue"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: modelData
+                        }
                     }
                 }
             }
