@@ -70,7 +70,7 @@ ApplicationWindow {
                         width: (calendarPanel.width / 7)
                         height: parent.height
                         border.width: 1
-                        color: "#007880"
+                        color: "#FF9A84"
 
                         Text {
                             anchors.centerIn: parent
@@ -96,7 +96,7 @@ ApplicationWindow {
                         width: calendarView.cellWidth - 2
                         height: calendarView.cellHeight - 2
                         border.width: modelData === 0 ? 1 : 2
-                        color: modelData === 0 ? "#ABABAB" : "lightblue"
+                        color: modelData === 0 ? "#39B286" : "#84FFD2"
 
                         Text {
                             anchors.centerIn: parent
@@ -112,7 +112,7 @@ ApplicationWindow {
             Layout.maximumWidth: Screen.desktopAvailableWidth / 2
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
             Layout.fillWidth: true
-            color: "lightgray"
+            color: "#B25945"
         }
     }
 }
