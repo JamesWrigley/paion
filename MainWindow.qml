@@ -67,10 +67,9 @@ ApplicationWindow {
                     orientation: "Horizontal"
 
                     delegate: Rectangle {
-                        width: (calendarPanel.width / 7)
+                        width: calendarPanel.width / 7
                         height: parent.height
-                        border.width: 1
-                        color: "#FF9A84"
+                        color: "#E68B77"
 
                         Text {
                             anchors.centerIn: parent
@@ -80,27 +79,33 @@ ApplicationWindow {
                     }
                 }
 
-                GridView {
-                    id: calendarView
+                Flickable {
                     anchors.top: daysView.bottom
-                    anchors.topMargin: 5
+                    anchors.margins: 5
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    model: calendarModel
+                    contentHeight: calendarView.height
+                    contentWidth: calendarView.width
 
-                    cellWidth: calendarPanel.width / 7
-                    cellHeight: calendarPanel.height / 5
+                    Grid {
+                        id: calendarView
+                        columns: 7
+                        spacing: 5
 
-                    delegate: Rectangle {
-                        width: calendarView.cellWidth - 2
-                        height: calendarView.cellHeight - 2
-                        border.width: modelData === 0 ? 1 : 2
-                        color: modelData === 0 ? "#39B286" : "#84FFD2"
+                        Repeater {
+                            model: calendarModel
 
-                        Text {
-                            anchors.centerIn: parent
-                            text: modelData === 0 ? "" : modelData
+                            delegate: Rectangle {
+                                width: (calendarPanel.width / 7) - parent.spacing - .5
+                                height: calendarPanel.height / 5
+                                color: modelData === 0 ? "#39B286" : "#84FFD2"
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: modelData === 0 ? "" : modelData
+                                }
+                            }
                         }
                     }
                 }
