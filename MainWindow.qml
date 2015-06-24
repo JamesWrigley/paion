@@ -28,6 +28,9 @@ ApplicationWindow {
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
 
+    signal forward()
+    signal backward()
+
     ListModel {
         id: daysModel
 
@@ -40,7 +43,45 @@ ApplicationWindow {
         ListElement { name: "Sunday" }
     }
 
-    toolBar: PoolBar { }
+    toolBar: Rectangle {
+        anchors.fill: parent
+        color: "#FFA49B"
+        height: 40
+
+        RowLayout {
+            spacing: 100
+            anchors.centerIn: parent
+
+            Image {
+                source: "icons/previous.svg"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: { backward() }
+                }
+            }
+
+            Rectangle {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: currentMonth
+                }
+            }
+
+            Image {
+                source: "icons/next.svg"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: { forward() }
+                }
+            }
+        }
+    }
 
     SplitView {
         anchors.fill: parent
@@ -85,11 +126,11 @@ ApplicationWindow {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    contentHeight: calendarView.height
-                    contentWidth: calendarView.width
+                    contentHeight: calendarGrid.height
+                    contentWidth: calendarGrid.width
 
                     Grid {
-                        id: calendarView
+                        id: calendarGrid
                         columns: 7
                         spacing: 5
 
@@ -97,7 +138,7 @@ ApplicationWindow {
                             model: calendarModel
 
                             delegate: Rectangle {
-                                width: (calendarPanel.width / 7) - parent.spacing - .5
+                                width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
                                 height: calendarPanel.height / 5
                                 color: modelData === 0 ? "#39B286" : "#84FFD2"
 

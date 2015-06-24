@@ -23,17 +23,48 @@ import calendar
 from datetime import date
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlEngine, QQmlComponent
+from PyQt5.QtQml import QQmlComponent, QQmlApplicationEngine
+
+class Paion():
+    dates = []
+    month = -1
+
+    def __init__(self, initialMonth):
+        assert type(initialMonth) == int
+        self.month = initialMonth
+        self.createDatesList()
+
+        app = QApplication(sys.argv)
+
+        self.engine = QQmlApplicationEngine()
+        self.resetProperties()
+        self.engine.load("MainWindow.qml")
+
+        rootObject = self.engine.rootObjects()[0]
+        rootObject.forward.connect(self.forward)
+        rootObject.backward.connect(self.backward)
+
+        app.exec()
+
+    def createDatesList(self):
+        self.dates = [day for week in calendar.monthcalendar(date.today().year, self.month) for day in week]
+
+    def resetProperties(self):
+        self.engine.rootContext().setContextProperty("calendarModel", self.dates)
+        self.engine.rootContext().setContextProperty("currentMonth", calendar.month_name[self.month])        
+
+    def forward(self):
+        if self.month < 12:
+            self.month += 1
+            self.createDatesList()
+            self.resetProperties()
+
+    def backward(self):
+        if self.month >= 2:
+            self.month -= 1
+            self.createDatesList()
+            self.resetProperties()
+
 
 if __name__ == "__main__":
-    # Get a list of weeks containing a list of days, and flatten it
-    currentMonth = [day for week in calendar.monthcalendar(date.today().year, date.today().month) for day in week]
-
-    app = QApplication(sys.argv)
-    engine = QQmlEngine()
-    engine.rootContext().setContextProperty("calendarModel", currentMonth)
-    windowComponent = QQmlComponent(engine)
-    windowComponent.loadUrl(QUrl("MainWindow.qml"))
-    window = windowComponent.create()
-    window.show()
-    app.exec()
+    window = Paion(date.today().month)
