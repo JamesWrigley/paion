@@ -93,59 +93,54 @@ ApplicationWindow {
             Layout.minimumWidth: Screen.desktopAvailableWidth / 2
             color: "grey"
 
-            ColumnLayout {
-                anchors.fill: parent
-                spacing: 5
+            ListView {
+                z: 1 // Force this to be drawn on top
+                id: daysView
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 30
+                model: daysModel
+                Layout.alignment: Qt.AlignTop
+                orientation: "Horizontal"
 
-                ListView {
-                    z: 1 // Force this to be drawn on top
-                    id: daysView
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: 30
-                    model: daysModel
-                    Layout.alignment: Qt.AlignTop
-                    orientation: "Horizontal"
+                delegate: Rectangle {
+                    width: calendarPanel.width / 7
+                    height: parent.height
+                    color: "#E68B77"
 
-                    delegate: Rectangle {
-                        width: calendarPanel.width / 7
-                        height: parent.height
-                        color: "#E68B77"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: modelData
-                            color: "white"
-                        }
+                    Text {
+                        anchors.centerIn: parent
+                        text: modelData
+                        color: "white"
                     }
                 }
+            }
 
-                Flickable {
-                    anchors.top: daysView.bottom
-                    anchors.margins: 5
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    contentHeight: calendarGrid.height
-                    contentWidth: calendarGrid.width
+            Flickable {
+                anchors.top: daysView.bottom
+                anchors.margins: 5
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                contentHeight: calendarGrid.height
+                contentWidth: calendarGrid.width
 
-                    Grid {
-                        id: calendarGrid
-                        columns: 7
-                        spacing: 5
+                Grid {
+                    id: calendarGrid
+                    columns: 7
+                    spacing: 5
 
-                        Repeater {
-                            model: calendarModel
+                    Repeater {
+                        model: calendarModel
 
-                            delegate: Rectangle {
-                                width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
-                                height: calendarPanel.height / 5
-                                color: modelData === 0 ? "#39B286" : "#84FFD2"
+                        delegate: Rectangle {
+                            width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
+                            height: calendarPanel.height / 5
+                            color: modelData === 0 ? "#39B286" : "#84FFD2"
 
-                                Text {
-                                    anchors.centerIn: parent
-                                    text: modelData === 0 ? "" : modelData
-                                }
+                            Text {
+                                anchors.centerIn: parent
+                                text: modelData === 0 ? "" : modelData
                             }
                         }
                     }
