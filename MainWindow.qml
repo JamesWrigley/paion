@@ -44,9 +44,9 @@ ApplicationWindow {
     }
 
     toolBar: Rectangle {
-        anchors.fill: parent
-        color: "#FFA49B"
         height: 40
+        color: "#FFA49B"
+        anchors.fill: parent
 
         RowLayout {
             spacing: 100
@@ -62,12 +62,10 @@ ApplicationWindow {
             }
 
             Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.centerIn: parent
 
                 Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.centerIn: parent
                     text: currentMonth
                 }
             }
@@ -89,9 +87,9 @@ ApplicationWindow {
 
         Rectangle {
             id: calendarPanel
+            color: "grey"
             width: Screen.desktopAvailableWidth / 1.3
             Layout.minimumWidth: Screen.desktopAvailableWidth / 2
-            color: "grey"
 
             ListView {
                 id: daysView
@@ -106,12 +104,13 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignTop
 
                 delegate: Rectangle {
-                    width: calendarPanel.width / 7
-                    height: parent.height
                     color: "#E68B77"
+                    height: parent.height
+                    width: calendarPanel.width / 7
 
                     Text {
                         anchors.centerIn: parent
+
                         text: modelData
                         color: "white"
                     }
@@ -139,9 +138,9 @@ ApplicationWindow {
                         model: calendarModel
 
                         delegate: Rectangle {
-                            width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
-                            height: calendarPanel.height / 5
                             color: modelData === 0 ? "#39B286" : "#84FFD2"
+                            height: calendarPanel.height / 5
+                            width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
 
                             Text {
                                 anchors.centerIn: parent
@@ -155,10 +154,11 @@ ApplicationWindow {
 
         Rectangle {
             id: propertiesPanel
+            color: "#B25945"
+
             Layout.maximumWidth: Screen.desktopAvailableWidth / 2
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
             Layout.fillWidth: true
-            color: "#B25945"
         }
     }
 }
