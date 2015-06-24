@@ -119,13 +119,16 @@ ApplicationWindow {
             }
 
             Flickable {
-                anchors.top: daysView.bottom
                 anchors.margins: 5
                 anchors.left: parent.left
                 anchors.right: parent.right
+                anchors.top: daysView.bottom
                 anchors.bottom: parent.bottom
-                contentHeight: calendarGrid.height
+
                 contentWidth: calendarGrid.width
+                contentHeight: calendarGrid.height
+
+                flickableDirection: Flickable.VerticalFlick
 
                 Grid {
                     id: calendarGrid
