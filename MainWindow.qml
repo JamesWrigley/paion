@@ -94,14 +94,16 @@ ApplicationWindow {
             color: "grey"
 
             ListView {
-                z: 1 // Force this to be drawn on top
                 id: daysView
-                anchors.left: parent.left
-                anchors.right: parent.right
                 height: 30
                 model: daysModel
-                Layout.alignment: Qt.AlignTop
+                z: 1 // Force this to be drawn on top
+
+                interactive: false
                 orientation: "Horizontal"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                Layout.alignment: Qt.AlignTop
 
                 delegate: Rectangle {
                     width: calendarPanel.width / 7
