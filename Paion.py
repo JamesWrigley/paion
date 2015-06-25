@@ -28,10 +28,13 @@ from PyQt5.QtQml import QQmlComponent, QQmlApplicationEngine
 class Paion():
     dates = []
     month = -1
+    year = -1
 
-    def __init__(self, initialMonth):
-        assert type(initialMonth) == int
+    def __init__(self, initialMonth, initialYear):
+        assert type(initialMonth) == int and type(initialYear) == int
+
         self.month = initialMonth
+        self.year = initialYear
         self.createDatesList()
 
         app = QApplication(sys.argv)
@@ -47,24 +50,33 @@ class Paion():
         app.exec()
 
     def createDatesList(self):
-        self.dates = [day for week in calendar.monthcalendar(date.today().year, self.month) for day in week]
+        self.dates = [day for week in calendar.monthcalendar(self.year, self.month) for day in week]
 
     def resetProperties(self):
         self.engine.rootContext().setContextProperty("calendarModel", self.dates)
-        self.engine.rootContext().setContextProperty("currentMonth", calendar.month_name[self.month])        
+        self.engine.rootContext().setContextProperty("currentMonth", calendar.month_name[self.month] + ", " + str(self.year))        
 
     def forward(self):
-        if self.month < 12:
+        # Rollover to the next year if necessary
+        if self.month + 1 > 12:
+            self.month = 1
+            self.year += 1
+        else:
             self.month += 1
-            self.createDatesList()
-            self.resetProperties()
+
+        self.createDatesList()
+        self.resetProperties()
 
     def backward(self):
-        if self.month >= 2:
+        if self.month - 1 < 1:
+            self.month = 12
+            self.year -= 1
+        else:
             self.month -= 1
-            self.createDatesList()
-            self.resetProperties()
+
+        self.createDatesList()
+        self.resetProperties()
 
 
 if __name__ == "__main__":
-    window = Paion(date.today().month)
+    window = Paion(date.today().month, date.today().year)
