@@ -42,7 +42,7 @@ Rectangle {
 
         property color hoveredColor: Qt.darker(baseColor, 1.1)
 
-        onExited: { parent.color = baseColor }
+        onExited: { parent.color = parent.baseColor }
         onEntered: { parent.color = hoveredColor }
         onReleased: { mouseReleased(); parent.color = hoveredColor }
         onPressed: { parent.color = Qt.darker(parent.color, 1.2) }
