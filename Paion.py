@@ -21,9 +21,8 @@
 import sys
 import calendar
 from datetime import date
-from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlComponent, QQmlApplicationEngine
+from PyQt5.QtQml import QQmlApplicationEngine
 
 class Paion():
     dates = []
