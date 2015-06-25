@@ -49,7 +49,7 @@ ApplicationWindow {
         anchors.fill: parent
 
         RowLayout {
-            spacing: 100
+            spacing: 200
             anchors.centerIn: parent
 
             Image {
