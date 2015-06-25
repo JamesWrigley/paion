@@ -146,11 +146,37 @@ ApplicationWindow {
 
         Rectangle {
             id: propertiesPanel
-            color: "#B25945"
+            color: "#D77A71"
 
             Layout.maximumWidth: Screen.desktopAvailableWidth / 2
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
-            Layout.fillWidth: true
+
+            ColumnLayout {
+                spacing: 20
+                anchors.fill: parent
+                anchors.topMargin: 10
+                
+                Rectangle {
+                    height: 25
+                    Layout.alignment: Qt.AlignTop
+                    Layout.preferredWidth: parent.width - 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    color: "lightgrey"
+
+                    TextInput {
+                        id: input
+
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        text: "Hello World"
+                    }
+                }
+            }
         }
     }
 }
