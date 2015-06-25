@@ -55,6 +55,8 @@ ApplicationWindow {
             ToolbarButton {
                 iconPath: "icons/previous.svg"
                 baseColor: toolBar.color
+
+                onMouseReleased: { backward() }
             }
 
             Rectangle {
@@ -67,8 +69,10 @@ ApplicationWindow {
             }
 
             ToolbarButton {
-                iconPath: "icons/next.svg"
                 baseColor: toolBar.color
+                iconPath: "icons/next.svg"
+
+                onMouseReleased: { forward() }
             }
         }
     }

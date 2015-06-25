@@ -25,8 +25,10 @@ Rectangle {
     color: baseColor
     Layout.fillWidth: true
 
-    property color baseColor: "grey"
     property string iconPath
+    property color baseColor: "grey"
+
+    signal mouseReleased()
 
     Image {
         z: 1
@@ -42,7 +44,7 @@ Rectangle {
 
         onExited: { parent.color = baseColor }
         onEntered: { parent.color = hoveredColor }
-        onReleased: { backward(); parent.color = hoveredColor }
+        onReleased: { mouseReleased(); parent.color = hoveredColor }
         onPressed: { parent.color = Qt.darker(parent.color, 1.2) }
     }
 }
