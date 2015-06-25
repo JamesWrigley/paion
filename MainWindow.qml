@@ -52,13 +52,9 @@ ApplicationWindow {
             spacing: 200
             anchors.centerIn: parent
 
-            Image {
-                source: "icons/previous.svg"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: { backward() }
-                }
+            ToolbarButton {
+                iconPath: "icons/previous.svg"
+                baseColor: toolBar.color
             }
 
             Rectangle {
@@ -70,13 +66,9 @@ ApplicationWindow {
                 }
             }
 
-            Image {
-                source: "icons/next.svg"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: { forward() }
-                }
+            ToolbarButton {
+                iconPath: "icons/next.svg"
+                baseColor: toolBar.color
             }
         }
     }
