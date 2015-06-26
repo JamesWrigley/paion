@@ -108,7 +108,6 @@ ApplicationWindow {
                         anchors.centerIn: parent
 
                         text: modelData
-                        color: "white"
                     }
                 }
             }
@@ -156,17 +155,25 @@ ApplicationWindow {
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
 
             ColumnLayout {
+                id: propertiesLayout
+
                 spacing: 20
                 anchors.fill: parent
                 anchors.topMargin: 10
                 
                 Rectangle {
-                    height: 25
+                    height: childrenRect.height + 10
                     Layout.alignment: Qt.AlignTop
                     Layout.preferredWidth: parent.width - 20
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    color: "lightgrey"
+                    color: ma.containsMouse || input.cursorVisible ? "#F1F1F1" : "lightgrey"
+
+                    MouseArea {
+                        id: ma
+                        hoverEnabled: true
+                        anchors.fill: input
+                    }
 
                     TextInput {
                         id: input
@@ -175,9 +182,16 @@ ApplicationWindow {
                         anchors.rightMargin: 5
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        // This causes masses of errors since it's a binding
+                        // loop with parent.height, unfortunately it seems to be
+                        // the only way to get the behaviour needed (resizing)
                         anchors.verticalCenter: parent.verticalCenter
 
-                        text: "Hello World"
+                        selectByMouse: true
+                        wrapMode: TextInput.Wrap 
+                        selectionColor: "steelblue"
+
+                        onEditingFinished: { parent.forceActiveFocus() }
                     }
                 }
             }
