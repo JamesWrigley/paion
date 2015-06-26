@@ -160,37 +160,9 @@ ApplicationWindow {
                 spacing: 20
                 anchors.fill: parent
                 anchors.topMargin: 10
-                
-                Rectangle {
-                    height: input.height + 10
-                    Layout.alignment: Qt.AlignTop
-                    Layout.preferredHeight: height
-                    Layout.preferredWidth: parent.width - 20
-                    anchors.horizontalCenter: parent.horizontalCenter
 
-                    color: ma.containsMouse || input.cursorVisible ? "#F1F1F1" : "lightgrey"
-
-                    MouseArea {
-                        id: ma
-                        hoverEnabled: true
-                        anchors.fill: input
-                    }
-
-                    TextInput {
-                        id: input
-
-                        anchors.leftMargin: 5
-                        anchors.rightMargin: 5
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        selectByMouse: true
-                        wrapMode: TextInput.Wrap 
-                        selectionColor: "steelblue"
-
-                        onEditingFinished: { parent.forceActiveFocus() }
-                    }
+                PextField {
+                    labelText: "Event Name"
                 }
             }
         }
