@@ -162,8 +162,9 @@ ApplicationWindow {
                 anchors.topMargin: 10
                 
                 Rectangle {
-                    height: childrenRect.height + 10
+                    height: input.height + 10
                     Layout.alignment: Qt.AlignTop
+                    Layout.preferredHeight: height
                     Layout.preferredWidth: parent.width - 20
                     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -182,9 +183,6 @@ ApplicationWindow {
                         anchors.rightMargin: 5
                         anchors.left: parent.left
                         anchors.right: parent.right
-                        // This causes masses of errors since it's a binding
-                        // loop with parent.height, unfortunately it seems to be
-                        // the only way to get the behaviour needed (resizing)
                         anchors.verticalCenter: parent.verticalCenter
 
                         selectByMouse: true
