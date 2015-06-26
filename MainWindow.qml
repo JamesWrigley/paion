@@ -52,7 +52,7 @@ ApplicationWindow {
             spacing: 200
             anchors.centerIn: parent
 
-            ToolbarButton {
+            Putton {
                 iconPath: "icons/previous.svg"
                 baseColor: toolBar.color
 
@@ -68,7 +68,7 @@ ApplicationWindow {
                 }
             }
 
-            ToolbarButton {
+            Putton {
                 baseColor: toolBar.color
                 iconPath: "icons/next.svg"
 
