@@ -73,6 +73,7 @@ Item {
                 wrapMode: TextInput.Wrap 
                 selectionColor: "steelblue"
 
+                Keys.onEscapePressed: { parent.forceActiveFocus() }
                 onEditingFinished: { parent.forceActiveFocus() }
             }
         }

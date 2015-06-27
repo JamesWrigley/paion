@@ -154,6 +154,11 @@ ApplicationWindow {
             Layout.maximumWidth: Screen.desktopAvailableWidth / 2
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
 
+            MouseArea { // To lose focus on the PextField's when we click outside them
+                anchors.fill: parent
+                onClicked: { parent.forceActiveFocus() }
+            }
+
             ColumnLayout { // This is a bit of a hack, what with the custom anchoring etc
                 id: propertiesLayout
 
