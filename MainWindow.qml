@@ -154,15 +154,41 @@ ApplicationWindow {
             Layout.maximumWidth: Screen.desktopAvailableWidth / 2
             Layout.minimumWidth: Screen.desktopAvailableWidth / 6
 
-            ColumnLayout {
+            ColumnLayout { // This is a bit of a hack, what with the custom anchoring etc
                 id: propertiesLayout
 
-                spacing: 20
+                spacing: 35
                 anchors.fill: parent
                 anchors.topMargin: 10
 
                 PextField {
+                    id: nameField
+                    height: inputHeight
+
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+
                     labelText: "Event Name"
+                }
+
+                PextField {
+                    id: locField
+                    height: inputHeight
+                    Layout.fillWidth: true
+                    anchors.top: nameField.bottom
+                    anchors.topMargin: parent.spacing
+
+                    labelText: "Location"
+                }
+
+                PextField {
+                    id: descField
+                    height: inputHeight
+                    Layout.fillWidth: true
+                    anchors.top: locField.bottom
+                    anchors.topMargin: parent.spacing
+
+                    labelText: "Description"
                 }
             }
         }
