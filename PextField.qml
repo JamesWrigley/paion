@@ -20,10 +20,11 @@ import QtQuick 2.4
 import QtQuick.Layouts 1.1
 
 Item {
-    anchors.fill: parent
-
     property string labelText
     readonly property string text: input.text
+    property real inputHeight: inputRect.height
+
+    Layout.preferredHeight: height
 
     ColumnLayout {
         anchors.fill: parent
@@ -40,6 +41,7 @@ Item {
         }
 
         Rectangle {
+            id: inputRect
             height: input.height + 10
 
             anchors.left: label.left
