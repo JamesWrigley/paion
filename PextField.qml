@@ -42,6 +42,7 @@ Item {
 
         Rectangle {
             id: inputRect
+            radius: 10
             height: input.height + 10
 
             anchors.left: label.left
