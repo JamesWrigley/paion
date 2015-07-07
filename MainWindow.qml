@@ -124,6 +124,11 @@ ApplicationWindow {
 
                 flickableDirection: Flickable.VerticalFlick
 
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                }
+
                 Grid {
                     id: calendarGrid
                     columns: 7
@@ -133,9 +138,23 @@ ApplicationWindow {
                         model: calendarModel
 
                         delegate: Rectangle {
-                            color: modelData === 0 ? "#39B286" : "#84FFD2"
                             height: calendarPanel.height / 5
                             width: (calendarPanel.width / 7) - calendarGrid.spacing - .5
+                            color: { if (modelData === 0) { "#39B286" } else if (ma.containsMouse) { "#DBDBDB" } else { "#84FFD2" } }
+
+                            MouseArea {
+                                id: ma
+                                anchors.fill: parent
+                                hoverEnabled: true
+
+                                onClicked: {
+                                    if (modelData != "") {
+                                        border.width = width / 5
+                                        border.color = "#23CC8E"
+                                        color = "#F0F0F0"
+                                    }
+                                }
+                            }
 
                             Text {
                                 anchors.centerIn: parent
