@@ -24,8 +24,8 @@ import EventPanel
 import CalendarGrid
 from datetime import date
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSplitter
+from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QToolBar, QSplitter, QWidget, QSizePolicy
 
 class Paion(QMainWindow):
     dates = []
@@ -41,19 +41,41 @@ class Paion(QMainWindow):
         self.createDatesList()
 
         # Create UI
+        leftSpacer = QWidget()
+        leftSpacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        rightSpacer = QWidget()
+        rightSpacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        monthLabel = QLabel(calendar.month_name[self.month])
+        monthLabel.setObjectName("monthLabel")
+
+        toolbar = QToolBar()
+        toolbar.addWidget(leftSpacer)
+        toolbar.addWidget(QPushButton(QIcon("icons/previous.svg"), ""))
+        toolbar.addWidget(monthLabel)
+        toolbar.addWidget(QPushButton(QIcon("icons/next.svg"), ""))
+        toolbar.addWidget(rightSpacer)
+        toolbar.setMovable(False)
+
         gridWidget = CalendarGrid.CalendarGrid(self.dates)
         eventWidget = EventPanel.EventPanel()
         eventWidget.setMaximumWidth(self.width() / 1.2)
 
         splitter = QSplitter()
-        splitter.setChildrenCollapsible(False)
         splitter.addWidget(gridWidget)
         splitter.addWidget(eventWidget)
+        splitter.setChildrenCollapsible(False)
         splitter.moveSplitter(self.width() / 1.3, 0)
 
+        self.addToolBar(toolbar)
         self.setCentralWidget(splitter)
         self.setWindowState(Qt.WindowMaximized)
-        self.setStyleSheet("QMainWindow { background: #333333 }")
+        self.setStyleSheet("QMainWindow { background: #333333 }"
+                           "QToolBar { background: #444444; border: 1px solid black; padding: 3px; spacing: 30px }"
+                           "QLabel#monthLabel { font-size: 25px; color: #DBDBDB }"
+                           "QPushButton { border: none; outline: none; icon-size: 35px}"
+                           "QPushButton:hover { background-color: #393939 }"
+                           "QPushButton:pressed { background-color: #303030 }")
 
         self.show()
 
