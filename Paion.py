@@ -20,40 +20,54 @@
 
 import sys
 import calendar
+import EventPanel
+import CalendarGrid
 from datetime import date
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlApplicationEngine
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSplitter
 
-class Paion():
+class Paion(QMainWindow):
     dates = []
     month = -1
     year = -1
 
     def __init__(self, initialMonth, initialYear):
         assert type(initialMonth) == int and type(initialYear) == int
+        super().__init__()
 
         self.month = initialMonth
         self.year = initialYear
         self.createDatesList()
 
-        app = QApplication(sys.argv)
+        # Create UI
+        gridWidget = CalendarGrid.CalendarGrid(self.dates)
+        eventWidget = EventPanel.EventPanel()
+        eventWidget.setMaximumWidth(self.width() / 1.2)
 
-        self.engine = QQmlApplicationEngine()
-        self.resetProperties()
-        self.engine.load("MainWindow.qml")
+        splitter = QSplitter()
+        splitter.setChildrenCollapsible(False)
+        splitter.addWidget(gridWidget)
+        splitter.addWidget(eventWidget)
+        splitter.moveSplitter(self.width() / 1.3, 0)
 
-        rootObject = self.engine.rootObjects()[0]
-        rootObject.forward.connect(self.forward)
-        rootObject.backward.connect(self.backward)
+        self.setCentralWidget(splitter)
+        self.setWindowState(Qt.WindowMaximized)
+        self.setStyleSheet("QMainWindow { background: #333333 }")
 
-        app.exec()
+        self.show()
+
+    def backward(self):
+        if self.month - 1 < 1:
+            self.month = 12
+            self.year -= 1
+        else:
+            self.month -= 1
+
+        self.createDatesList()
 
     def createDatesList(self):
-        self.dates = [day for week in calendar.monthcalendar(self.year, self.month) for day in week]
-
-    def resetProperties(self):
-        self.engine.rootContext().setContextProperty("calendarModel", self.dates)
-        self.engine.rootContext().setContextProperty("currentMonth", calendar.month_name[self.month] + ", " + str(self.year))        
+        self.dates = calendar.monthcalendar(self.year, self.month)
 
     def forward(self):
         # Rollover to the next year if necessary
@@ -66,16 +80,9 @@ class Paion():
         self.createDatesList()
         self.resetProperties()
 
-    def backward(self):
-        if self.month - 1 < 1:
-            self.month = 12
-            self.year -= 1
-        else:
-            self.month -= 1
-
-        self.createDatesList()
-        self.resetProperties()
-
 
 if __name__ == "__main__":
+    app = QApplication(sys.argv)
+#    app.setFont(QFont("Comfortaa", 13))
     window = Paion(date.today().month, date.today().year)
+    sys.exit(app.exec_())
