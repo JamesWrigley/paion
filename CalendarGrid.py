@@ -22,6 +22,7 @@ from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
 # A class for each cell of CalendarGrid
 class Day(QFrame):
     isNull = False
+    dayLabel = None
     isSelected = False
     defaultStylesheet = ""
     backgroundColor = "pink"
@@ -32,12 +33,11 @@ class Day(QFrame):
         super().__init__()
 
         self.isNull = str(day) == "0"
-
-        dayLabel = QLabel("" if self.isNull else str(day))
+        self.dayLabel = QLabel("" if self.isNull else str(day))
 
         mainVbox = QVBoxLayout()
         mainVbox.setAlignment(Qt.AlignCenter)
-        mainVbox.addWidget(dayLabel)
+        mainVbox.addWidget(self.dayLabel)
 
         self.backgroundColor = "#319973" if self.isNull else "#6ED5AF"
         self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(self.backgroundColor)
@@ -66,20 +66,14 @@ class Day(QFrame):
 
 
 class CalendarGrid(QWidget):
+    mainLayout = None
     currentDay = None
 
-    def __init__(self, month):
-        assert all(type(element) == list for element in month)
+    def __init__(self):
         super().__init__()
 
-        mainLayout = QGridLayout()
-        for i, week in enumerate(month):
-            for j, day in enumerate(week):
-                cell = Day(day)
-                cell.selected.connect(self.onSelectionChanged)
-                mainLayout.addWidget(cell, i, j)
-
-        self.setLayout(mainLayout)
+        self.mainLayout = QGridLayout()
+        self.setLayout(self.mainLayout)
 
     def onSelectionChanged(self, day):
         if self.currentDay is not None and day is not self.currentDay:
@@ -87,3 +81,16 @@ class CalendarGrid(QWidget):
             self.currentDay.leaveEvent(None)
 
         self.currentDay = day
+
+    def setMonth(self, month):
+        assert all(type(element) == list for element in month)
+
+        # Clear the grid
+        for i in reversed(range(self.mainLayout.count())):
+            self.mainLayout.itemAt(i).widget().setParent(None)
+
+        for i, week in enumerate(month):
+            for j, day in enumerate(week):
+                cell = Day(day)
+                cell.selected.connect(self.onSelectionChanged)
+                self.mainLayout.addWidget(cell, i, j)

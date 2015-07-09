@@ -32,6 +32,8 @@ class Paion(QMainWindow):
     year = -1
     month = -1
     dates = []
+    gridWidget = None
+    monthLabel = None
 
     def __init__(self, initialMonth, initialYear):
         assert type(initialMonth) == int and type(initialYear) == int
@@ -39,7 +41,6 @@ class Paion(QMainWindow):
 
         self.month = initialMonth
         self.year = initialYear
-        self.createDatesList()
 
         # Create UI
         leftSpacer = QWidget()
@@ -47,23 +48,28 @@ class Paion(QMainWindow):
         rightSpacer = QWidget()
         rightSpacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        monthLabel = QLabel(calendar.month_name[self.month])
-        monthLabel.setObjectName("monthLabel")
+        self.monthLabel = QLabel(calendar.month_name[self.month])
+        self.monthLabel.setObjectName("monthLabel")
 
+        previousButton = QPushButton(QIcon("icons/previous.svg"), "")
+        nextButton = QPushButton(QIcon("icons/next.svg"), "")
+        previousButton.clicked.connect(self.backward)
+        nextButton.clicked.connect(self.forward)
         toolbar = QToolBar()
         toolbar.addWidget(leftSpacer)
-        toolbar.addWidget(QPushButton(QIcon("icons/previous.svg"), ""))
-        toolbar.addWidget(monthLabel)
-        toolbar.addWidget(QPushButton(QIcon("icons/next.svg"), ""))
+        toolbar.addWidget(previousButton)
+        toolbar.addWidget(self.monthLabel)
+        toolbar.addWidget(nextButton)
         toolbar.addWidget(rightSpacer)
         toolbar.setMovable(False)
 
-        gridWidget = CalendarGrid.CalendarGrid(self.dates)
+        self.gridWidget = CalendarGrid.CalendarGrid()
+        self.refresh()
         eventWidget = EventPanel.EventPanel()
         eventWidget.setMaximumWidth(self.width() / 1.2)
 
         splitter = QSplitter()
-        splitter.addWidget(gridWidget)
+        splitter.addWidget(self.gridWidget)
         splitter.addWidget(eventWidget)
         splitter.setChildrenCollapsible(False)
         splitter.moveSplitter(self.width() / 1.3, 0)
@@ -72,7 +78,7 @@ class Paion(QMainWindow):
         self.setCentralWidget(splitter)
         self.setWindowState(Qt.WindowMaximized)
         self.setStyleSheet("QMainWindow { background: #333333 }"
-                           "QToolBar { background: #444444; border: 1px solid black; padding: 3px; spacing: 30px }"
+                           "QToolBar { background: #444444; border: 1px solid black; padding: 4px; spacing: 30px }"
                            "QLabel#monthLabel { font-size: 25px; color: #DBDBDB }"
                            "QPushButton { border: none; outline: none; icon-size: 35px}"
                            "QPushButton:hover { background-color: #393939 }"
@@ -87,10 +93,11 @@ class Paion(QMainWindow):
         else:
             self.month -= 1
 
-        self.createDatesList()
+        self.refresh()
 
-    def createDatesList(self):
-        self.dates = calendar.monthcalendar(self.year, self.month)
+    def refresh(self):
+        self.gridWidget.setMonth(calendar.monthcalendar(self.year, self.month))
+        self.monthLabel.setText(calendar.month_name[self.month] + ", " + str(self.year))
 
     def forward(self):
         # Rollover to the next year if necessary
@@ -100,12 +107,10 @@ class Paion(QMainWindow):
         else:
             self.month += 1
 
-        self.createDatesList()
-        self.resetProperties()
+        self.refresh()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-#    app.setFont(QFont("Comfortaa", 13))
     window = Paion(date.today().month, date.today().year)
     sys.exit(app.exec_())
