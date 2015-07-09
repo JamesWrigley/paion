@@ -16,7 +16,7 @@
 #                                                                                #
 ##################################################################################
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
 
 # A class for each cell of CalendarGrid
@@ -25,6 +25,7 @@ class Day(QFrame):
     isNull = False
     backgroundColor = "pink"
     defaultStylesheet = ""
+    selected = pyqtSignal(QFrame)
 
     def __init__(self, day):
         assert type(day) == int or type(day) == str
@@ -54,6 +55,7 @@ class Day(QFrame):
     def mousePressEvent(self, event):
         if not self.isNull:
             self.isSelected = not self.isSelected
+            self.selected.emit(self)
 
             if self.isSelected:
                 self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 20px }")
@@ -62,7 +64,10 @@ class Day(QFrame):
         if not self.isNull and not self.isSelected:
             self.enterEvent(None)
 
+
 class CalendarGrid(QWidget):
+    currentCell = None
+
     def __init__(self, month):
         assert all(type(element) == list for element in month)
         super().__init__()
@@ -70,6 +75,15 @@ class CalendarGrid(QWidget):
         mainLayout = QGridLayout()
         for i, week in enumerate(month):
             for j, day in enumerate(week):
-                mainLayout.addWidget(Day(day), i, j)
+                cell = Day(day)
+                cell.selected.connect(self.onSelectionChanged)
+                mainLayout.addWidget(cell, i, j)
 
         self.setLayout(mainLayout)
+
+    def onSelectionChanged(self, day):
+        if self.currentCell is not None and day is not self.currentCell:
+            self.currentCell.isSelected = False
+            self.currentCell.leaveEvent(None)
+
+        self.currentCell = day
