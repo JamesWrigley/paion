@@ -21,7 +21,10 @@ from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
 
 # A class for each cell of CalendarGrid
 class Day(QFrame):
+    isSelected = False
     isNull = False
+    backgroundColor = "pink"
+    defaultStylesheet = ""
 
     def __init__(self, day):
         assert type(day) == int or type(day) == str
@@ -35,9 +38,29 @@ class Day(QFrame):
         mainVbox.setAlignment(Qt.AlignCenter)
         mainVbox.addWidget(dayLabel)
 
-        backgroundColor = "#39B286" if self.isNull else "#84FFD2"
-        self.setStyleSheet("QFrame {{ background: {0}; font-size: 17px }}".format(backgroundColor))
+        self.backgroundColor = "#319973" if self.isNull else "#6ED5AF"
+        self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(self.backgroundColor)
+        self.setStyleSheet(self.defaultStylesheet)
         self.setLayout(mainVbox)
+
+    def enterEvent(self, event):
+        if not self.isNull and not self.isSelected:
+            self.setStyleSheet("QFrame { background: #84FFD2; font-size: 20px }")
+
+    def leaveEvent(self, event):
+        if not self.isNull and not self.isSelected:
+            self.setStyleSheet(self.defaultStylesheet)
+
+    def mousePressEvent(self, event):
+        if not self.isNull:
+            self.isSelected = not self.isSelected
+
+            if self.isSelected:
+                self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 20px }")
+
+    def mouseReleaseEvent(self, event):
+        if not self.isNull and not self.isSelected:
+            self.enterEvent(None)
 
 class CalendarGrid(QWidget):
     def __init__(self, month):
