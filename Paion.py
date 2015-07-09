@@ -25,12 +25,13 @@ import CalendarGrid
 from datetime import date
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QToolBar, QSplitter, QWidget, QSizePolicy
+from PyQt5.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
+                             QToolBar, QSplitter, QWidget, QSizePolicy)
 
 class Paion(QMainWindow):
-    dates = []
-    month = -1
     year = -1
+    month = -1
+    dates = []
 
     def __init__(self, initialMonth, initialYear):
         assert type(initialMonth) == int and type(initialYear) == int

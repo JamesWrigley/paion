@@ -21,10 +21,10 @@ from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
 
 # A class for each cell of CalendarGrid
 class Day(QFrame):
-    isSelected = False
     isNull = False
-    backgroundColor = "pink"
+    isSelected = False
     defaultStylesheet = ""
+    backgroundColor = "pink"
     selected = pyqtSignal(QFrame)
 
     def __init__(self, day):
@@ -66,7 +66,7 @@ class Day(QFrame):
 
 
 class CalendarGrid(QWidget):
-    currentCell = None
+    currentDay = None
 
     def __init__(self, month):
         assert all(type(element) == list for element in month)
@@ -82,8 +82,8 @@ class CalendarGrid(QWidget):
         self.setLayout(mainLayout)
 
     def onSelectionChanged(self, day):
-        if self.currentCell is not None and day is not self.currentCell:
-            self.currentCell.isSelected = False
-            self.currentCell.leaveEvent(None)
+        if self.currentDay is not None and day is not self.currentDay:
+            self.currentDay.isSelected = False
+            self.currentDay.leaveEvent(None)
 
-        self.currentCell = day
+        self.currentDay = day
