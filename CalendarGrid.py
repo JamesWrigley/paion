@@ -19,7 +19,11 @@
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
 
-# A class for each cell of CalendarGrid
+"""
+A class that represents each cell of CalendarGrid.
+Methods of note:
+ - Day(str/int), the constructor, which takes in either a string or int to display
+"""
 class Day(QFrame):
     isNull = False
     dayLabel = None
@@ -65,6 +69,12 @@ class Day(QFrame):
             self.enterEvent(None)
 
 
+"""
+A class that contains the QGridLayout holding all the Day's.
+Methods of note:
+ - CalendarGrid(), the constructor
+ - setMonth(), takes in a list of weeks and applies it to the grid
+"""
 class CalendarGrid(QWidget):
     mainLayout = None
     currentDay = None

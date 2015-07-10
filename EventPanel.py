@@ -19,6 +19,12 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QTextEdit, QVBoxLayout
 
+"""
+A subclass of QTextEdit that dynamically resizes its height to the
+height of its contents.
+Methods of note:
+ - EventField(), the constructor
+"""
 class EventField(QTextEdit):
     def __init__(self):
         super().__init__()
@@ -32,6 +38,11 @@ class EventField(QTextEdit):
         self.setMinimumHeight(currentHeight)
         self.setMaximumHeight(currentHeight)
 
+"""
+The widget that contains/displays all fields for events.
+Methods of note:
+ - EventPanel(), the constructor
+"""
 class EventPanel(QWidget):
     def __init__(self):
         super().__init__()

@@ -28,6 +28,15 @@ from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
                              QToolBar, QSplitter, QWidget, QSizePolicy)
 
+"""
+The main window.
+Methods of note:
+ - Paion(int, int), the constructor, which takes a month and a year to start with
+ - backward(), goes back one month
+ - forward(), goes forward one month
+ - refresh(), refreshes the grid and date label in the toolbar (called by backward() and forward())
+ - resetMonth(), resets the program to the current month and year
+"""
 class Paion(QMainWindow):
     year = -1
     month = -1
@@ -63,10 +72,11 @@ class Paion(QMainWindow):
         toolbar.addWidget(nextButton)
         toolbar.addWidget(rightSpacer)
         toolbar.setMovable(False)
-        toolbar.setContextMenuPolicy(Qt.PreventContextMenu)
+        toolbar.setContextMenuPolicy(Qt.PreventContextMenu) # Disable the toolbar context menu (which hides the toolbar)
 
         self.gridWidget = CalendarGrid.CalendarGrid()
         self.refresh()
+
         eventWidget = EventPanel.EventPanel()
         eventWidget.setMaximumWidth(self.width() / 1.2)
 
@@ -81,14 +91,15 @@ class Paion(QMainWindow):
         self.setWindowState(Qt.WindowMaximized)
         self.setStyleSheet("QMainWindow { background: #333333 }"
                            "QToolBar { background: #444444; border: 1px solid black; spacing: 30px }"
-                           "QPushButton#monthLabel { font-size: 25px; color: #DBDBDB; padding: 10px }"
                            "QPushButton { border: none; outline: none; icon-size: 35px}"
                            "QPushButton:hover { background-color: #393939 }"
-                           "QPushButton:pressed { background-color: #303030 }")
+                           "QPushButton:pressed { background-color: #303030 }"
+                           "QPushButton#monthLabel { font-size: 25px; color: #DBDBDB; padding: 10px }")
 
         self.show()
 
     def backward(self):
+        # Rollover to the previous year if necessary
         if self.month - 1 < 1:
             self.month = 12
             self.year -= 1
@@ -96,10 +107,6 @@ class Paion(QMainWindow):
             self.month -= 1
 
         self.refresh()
-
-    def refresh(self):
-        self.gridWidget.setMonth(calendar.monthcalendar(self.year, self.month))
-        self.monthLabel.setText(calendar.month_name[self.month] + ", " + str(self.year))
 
     def forward(self):
         # Rollover to the next year if necessary
@@ -110,6 +117,10 @@ class Paion(QMainWindow):
             self.month += 1
 
         self.refresh()
+
+    def refresh(self):
+        self.gridWidget.setMonth(calendar.monthcalendar(self.year, self.month))
+        self.monthLabel.setText(calendar.month_name[self.month] + ", " + str(self.year))
 
     def resetMonth(self):
         self.month = date.today().month
