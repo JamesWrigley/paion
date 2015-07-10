@@ -46,34 +46,53 @@ class EventField(QTextEdit):
 The widget that contains/displays all fields for events.
 Methods of note:
  - EventPanel(), the constructor
+ - clear(), clear all the fields
 """
 class EventPanel(QScrollArea):
+    nameField = None
+    locationField = None
+    descriptionField = None
+
     def __init__(self):
         super().__init__()
 
         nameLabel = QLabel("Name")
-        nameField = EventField()
+        self.nameField = EventField()
 
         locationLabel = QLabel("Location")
-        locationField = EventField()
+        self.locationField = EventField()
 
         descriptionLabel = QLabel("Description")
-        descriptionField = EventField()
+        self.descriptionField = EventField()
 
         mainVbox = QVBoxLayout()
         mainVbox.setSizeConstraint(QLayout.SetMinAndMaxSize)
         mainVbox.addWidget(nameLabel)
-        mainVbox.addWidget(nameField)
+        mainVbox.addWidget(self.nameField)
+        mainVbox.addSpacing(20)
         mainVbox.addWidget(locationLabel)
-        mainVbox.addWidget(locationField)
+        mainVbox.addWidget(self.locationField)
+        mainVbox.addSpacing(20)
         mainVbox.addWidget(descriptionLabel)
-        mainVbox.addWidget(descriptionField)
+        mainVbox.addWidget(self.descriptionField)
         mainVbox.addStretch()
 
         mainWidget = QWidget()
         mainWidget.setLayout(mainVbox)
         mainWidget.setObjectName("eventPanelWidget")
-        mainWidget.setStyleSheet("QLabel { color: #DBDBDB; font-size: 17px } QTextEdit { background: #DBDBDB }")
+        self.setStyleSheet("QTextEdit { background: #DBDBDB }"
+                           "QLabel { color: #DBDBDB; font-size: 17px }"
+                           "QScrollBar { background: #333333 }"
+                           "QScrollBar::handle { background: #636363 }"
+                           "QScrollBar::handle:hover { background: #737373 }"
+                           "QScrollBar::up-arrow, QScrollBar::down-arrow, "
+                           "QScrollBar::left-arrow, QScrollBar::right-arrow, "
+                           "QScrollBar::sub-line, QScrollBar::add-line { background: transparent }")
 
         self.setWidget(mainWidget)
         self.setWidgetResizable(True)
+
+    def clear(self):
+        self.nameField.clear()
+        self.locationField.clear()
+        self.descriptionField.clear()
