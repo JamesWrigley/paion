@@ -48,8 +48,9 @@ class Paion(QMainWindow):
         rightSpacer = QWidget()
         rightSpacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.monthLabel = QLabel(calendar.month_name[self.month])
+        self.monthLabel = QPushButton(calendar.month_name[self.month])
         self.monthLabel.setObjectName("monthLabel")
+        self.monthLabel.clicked.connect(self.resetMonth)
 
         previousButton = QPushButton(QIcon("icons/previous.svg"), "")
         nextButton = QPushButton(QIcon("icons/next.svg"), "")
@@ -78,8 +79,8 @@ class Paion(QMainWindow):
         self.setCentralWidget(splitter)
         self.setWindowState(Qt.WindowMaximized)
         self.setStyleSheet("QMainWindow { background: #333333 }"
-                           "QToolBar { background: #444444; border: 1px solid black; padding: 4px; spacing: 30px }"
-                           "QLabel#monthLabel { font-size: 25px; color: #DBDBDB }"
+                           "QToolBar { background: #444444; border: 1px solid black; spacing: 30px }"
+                           "QPushButton#monthLabel { font-size: 25px; color: #DBDBDB; padding: 10px }"
                            "QPushButton { border: none; outline: none; icon-size: 35px}"
                            "QPushButton:hover { background-color: #393939 }"
                            "QPushButton:pressed { background-color: #303030 }")
@@ -109,6 +110,10 @@ class Paion(QMainWindow):
 
         self.refresh()
 
+    def resetMonth(self):
+        self.month = date.today().month
+        self.year = date.today().year
+        self.refresh()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
