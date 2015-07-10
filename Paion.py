@@ -84,7 +84,7 @@ class Paion(QMainWindow):
         splitter.addWidget(self.gridWidget)
         splitter.addWidget(eventWidget)
         splitter.setChildrenCollapsible(False)
-        splitter.moveSplitter(self.width() / 1.3, 0)
+        splitter.setSizes([self.width() / 4 * 3, self.width() / 4])
 
         self.addToolBar(toolbar)
         self.setCentralWidget(splitter)
