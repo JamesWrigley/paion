@@ -38,6 +38,10 @@ class EventField(QTextEdit):
         self.setMinimumHeight(currentHeight)
         self.setMaximumHeight(currentHeight)
 
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.resize()
+
 """
 The widget that contains/displays all fields for events.
 Methods of note:
