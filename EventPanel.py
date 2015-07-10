@@ -17,7 +17,7 @@
 ##################################################################################
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QWidget, QTextEdit, QVBoxLayout
+from PyQt5.QtWidgets import QLabel, QScrollArea, QTextEdit, QVBoxLayout, QWidget, QLayout, QSizePolicy
 
 """
 A subclass of QTextEdit that dynamically resizes its height to the
@@ -43,7 +43,7 @@ The widget that contains/displays all fields for events.
 Methods of note:
  - EventPanel(), the constructor
 """
-class EventPanel(QWidget):
+class EventPanel(QScrollArea):
     def __init__(self):
         super().__init__()
 
@@ -56,9 +56,8 @@ class EventPanel(QWidget):
         descriptionLabel = QLabel("Description")
         descriptionField = EventField()
 
-        self.setStyleSheet("QLabel { color: #DBDBDB; font-size: 17px } QTextEdit { background: #DBDBDB }")
-
         mainVbox = QVBoxLayout()
+        mainVbox.setSizeConstraint(QLayout.SetMinAndMaxSize)
         mainVbox.addWidget(nameLabel)
         mainVbox.addWidget(nameField)
         mainVbox.addWidget(locationLabel)
@@ -67,4 +66,10 @@ class EventPanel(QWidget):
         mainVbox.addWidget(descriptionField)
         mainVbox.addStretch()
 
-        self.setLayout(mainVbox)
+        mainWidget = QWidget()
+        mainWidget.setLayout(mainVbox)
+        mainWidget.setObjectName("eventPanelWidget")
+        mainWidget.setStyleSheet("QLabel { color: #DBDBDB; font-size: 17px } QTextEdit { background: #DBDBDB }")
+
+        self.setWidget(mainWidget)
+        self.setWidgetResizable(True)

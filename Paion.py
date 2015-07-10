@@ -90,6 +90,8 @@ class Paion(QMainWindow):
         self.setCentralWidget(splitter)
         self.setWindowState(Qt.WindowMaximized)
         self.setStyleSheet("QMainWindow { background: #333333 }"
+                           "QScrollArea { border: 0px solid black; }"
+                           "QWidget#eventPanelWidget { background: #333333 }"
                            "QToolBar { background: #444444; border: 1px solid black; spacing: 30px }"
                            "QPushButton { border: none; outline: none; icon-size: 35px}"
                            "QPushButton:hover { background-color: #393939 }"
