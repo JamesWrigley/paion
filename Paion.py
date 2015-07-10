@@ -125,9 +125,10 @@ class Paion(QMainWindow):
         self.monthLabel.setText(calendar.month_name[self.month] + ", " + str(self.year))
 
     def resetMonth(self):
-        self.month = date.today().month
-        self.year = date.today().year
-        self.refresh()
+        if self.month != date.today().month or self.year != date.today().year:
+            self.month = date.today().month
+            self.year = date.today().year
+            self.refresh()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
