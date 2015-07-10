@@ -130,6 +130,7 @@ class Paion(QMainWindow):
             self.year = date.today().year
             self.refresh()
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Paion(date.today().month, date.today().year)

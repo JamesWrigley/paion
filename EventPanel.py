@@ -42,6 +42,7 @@ class EventField(QTextEdit):
         super().resizeEvent(event)
         self.resize()
 
+
 """
 The widget that contains/displays all fields for events.
 Methods of note:
