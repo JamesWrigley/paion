@@ -63,6 +63,7 @@ class Paion(QMainWindow):
         toolbar.addWidget(nextButton)
         toolbar.addWidget(rightSpacer)
         toolbar.setMovable(False)
+        toolbar.setContextMenuPolicy(Qt.PreventContextMenu)
 
         self.gridWidget = CalendarGrid.CalendarGrid()
         self.refresh()
