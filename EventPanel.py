@@ -16,30 +16,42 @@
 #                                                                                #
 ##################################################################################
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QWidget, QTextEdit, QVBoxLayout
+
+class EventField(QTextEdit):
+    def __init__(self):
+        super().__init__()
+
+        self.document().contentsChanged.connect(self.resize)
+        self.setMaximumHeight(self.fontMetrics().height() + 8)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+    def resize(self):
+        currentHeight = self.document().size().height()
+        self.setMinimumHeight(currentHeight)
+        self.setMaximumHeight(currentHeight)
 
 class EventPanel(QWidget):
     def __init__(self):
         super().__init__()
 
         nameLabel = QLabel("Name")
-        nameField = QTextEdit()
+        nameField = EventField()
 
         locationLabel = QLabel("Location")
-        locationField = QTextEdit()
+        locationField = EventField()
 
         descriptionLabel = QLabel("Description")
-        descriptionField = QTextEdit()
+        descriptionField = EventField()
 
         self.setStyleSheet("QLabel { color: #DBDBDB; font-size: 17px } QTextEdit { background: #DBDBDB }")
 
         mainVbox = QVBoxLayout()
         mainVbox.addWidget(nameLabel)
         mainVbox.addWidget(nameField)
-        mainVbox.addStretch()
         mainVbox.addWidget(locationLabel)
         mainVbox.addWidget(locationField)
-        mainVbox.addStretch()
         mainVbox.addWidget(descriptionLabel)
         mainVbox.addWidget(descriptionField)
         mainVbox.addStretch()
