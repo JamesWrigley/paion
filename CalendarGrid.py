@@ -59,10 +59,10 @@ class Day(QFrame):
     def mousePressEvent(self, event):
         if not self.isNull:
             self.isSelected = not self.isSelected
-            self.selected.emit(self)
 
             if self.isSelected:
                 self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 20px }")
+                self.selected.emit(self)
 
     def mouseReleaseEvent(self, event):
         if not self.isNull and not self.isSelected:
