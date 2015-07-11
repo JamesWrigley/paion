@@ -17,7 +17,8 @@
 ##################################################################################
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QScrollArea, QTextEdit, QVBoxLayout, QWidget, QLayout, QSizePolicy
+from PyQt5.QtWidgets import (QLabel, QScrollArea, QTextEdit, QVBoxLayout,
+                             QWidget, QLayout, QSizePolicy)
 
 """
 A subclass of QTextEdit that dynamically resizes its height to the
@@ -52,7 +53,7 @@ Methods of note:
 class EventPanel(QScrollArea):
     nameField = None
     locationField = None
-    descriptionField = None
+    notesField = None
 
     def __init__(self):
         super().__init__()
@@ -63,8 +64,8 @@ class EventPanel(QScrollArea):
         locationLabel = QLabel("Location")
         self.locationField = EventField()
 
-        descriptionLabel = QLabel("Description")
-        self.descriptionField = EventField()
+        notesLabel = QLabel("Notes")
+        self.notesField = EventField()
 
         mainVbox = QVBoxLayout()
         mainVbox.setSizeConstraint(QLayout.SetMinAndMaxSize)
@@ -74,8 +75,8 @@ class EventPanel(QScrollArea):
         mainVbox.addWidget(locationLabel)
         mainVbox.addWidget(self.locationField)
         mainVbox.addSpacing(20)
-        mainVbox.addWidget(descriptionLabel)
-        mainVbox.addWidget(self.descriptionField)
+        mainVbox.addWidget(notesLabel)
+        mainVbox.addWidget(self.notesField)
         mainVbox.addStretch()
 
         mainWidget = QWidget()
@@ -96,4 +97,4 @@ class EventPanel(QScrollArea):
     def clear(self):
         self.nameField.clear()
         self.locationField.clear()
-        self.descriptionField.clear()
+        self.notesField.clear()
