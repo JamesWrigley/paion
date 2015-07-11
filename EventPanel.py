@@ -16,9 +16,9 @@
 #                                                                                #
 ##################################################################################
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QLabel, QScrollArea, QTextEdit, QVBoxLayout,
-                             QWidget, QLayout, QSizePolicy)
+from PyQt5.QtCore import Qt, QTime
+from PyQt5.QtWidgets import (QLabel, QScrollArea, QTextEdit, QVBoxLayout, QWidget,
+                             QLayout, QSizePolicy, QGroupBox, QTimeEdit, QHBoxLayout)
 
 """
 A subclass of QTextEdit that dynamically resizes its height to the
@@ -67,29 +67,58 @@ class EventPanel(QScrollArea):
         notesLabel = QLabel("Notes")
         self.notesField = EventField()
 
+        durationGroupBox = QGroupBox("All Day")
+        fromField = QTimeEdit(QTime(12, 0))
+        toLabel = QLabel("to")
+        toField = QTimeEdit(QTime(13, 0))
+        durationGroupBoxLayout = QHBoxLayout()
+        durationGroupBoxLayout.addWidget(fromField, 0, Qt.AlignLeft)
+        durationGroupBoxLayout.addWidget(toLabel, 0, Qt.AlignHCenter)
+        durationGroupBoxLayout.addWidget(toField, 0, Qt.AlignRight)
+        durationGroupBox.setLayout(durationGroupBoxLayout)
+        durationGroupBox.setCheckable(True)
+        durationGroupBox.setChecked(True)
+
+        spacing = 20
         mainVbox = QVBoxLayout()
         mainVbox.setSizeConstraint(QLayout.SetMinAndMaxSize)
         mainVbox.addWidget(nameLabel)
         mainVbox.addWidget(self.nameField)
-        mainVbox.addSpacing(20)
+        mainVbox.addSpacing(spacing)
         mainVbox.addWidget(locationLabel)
         mainVbox.addWidget(self.locationField)
-        mainVbox.addSpacing(20)
+        mainVbox.addSpacing(spacing)
         mainVbox.addWidget(notesLabel)
         mainVbox.addWidget(self.notesField)
+        mainVbox.addSpacing(spacing)
+        mainVbox.addWidget(durationGroupBox)
         mainVbox.addStretch()
 
         mainWidget = QWidget()
         mainWidget.setLayout(mainVbox)
         mainWidget.setObjectName("eventPanelWidget")
         self.setStyleSheet("QTextEdit { background: #DBDBDB }"
+
                            "QLabel { color: #DBDBDB; font-size: 17px }"
+
                            "QScrollBar { background: #333333 }"
                            "QScrollBar::handle { background: #636363 }"
                            "QScrollBar::handle:hover { background: #737373 }"
                            "QScrollBar::up-arrow, QScrollBar::down-arrow, "
                            "QScrollBar::left-arrow, QScrollBar::right-arrow, "
-                           "QScrollBar::sub-line, QScrollBar::add-line { background: transparent }")
+                           "QScrollBar::sub-line, QScrollBar::add-line { background: transparent }"
+
+                           "QGroupBox { background-color: #3C3C3C; font-size: 17px; padding-top: 3ex; outline: 0 }"
+                           "QGroupBox::title { color: #DBDBDB }"
+                           "QGroupBox::indicator { background-color: grey }"
+                           "QGroupBox::indicator:unchecked { image: url(icons/check.svg) }"
+
+                           "QTimeEdit { background-color: #DBDBDB; border: 7 solid #DBDBDB }"
+                           "QTimeEdit::up-button, QTimeEdit::down-button { margin-right: 5px }"
+                           "QTimeEdit::up-button { image: url(icons/up-arrow.svg) }"
+                           "QTimeEdit::down-button { image: url(icons/down-arrow.svg) }"
+                           "QTimeEdit::up-button:disabled { image: url(icons/up-arrow-disabled.svg) }"
+                           "QTimeEdit::down-button:disabled { image: url(icons/down-arrow-disabled.svg) }")
 
         self.setWidget(mainWidget)
         self.setWidgetResizable(True)
