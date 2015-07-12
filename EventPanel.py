@@ -18,7 +18,8 @@
 
 from PyQt5.QtCore import Qt, QTime
 from PyQt5.QtWidgets import (QLabel, QScrollArea, QTextEdit, QVBoxLayout, QWidget,
-                             QLayout, QSizePolicy, QGroupBox, QTimeEdit, QHBoxLayout)
+                             QLayout, QSizePolicy, QGroupBox, QTimeEdit,
+                             QHBoxLayout, QPushButton)
 
 """
 A subclass of QTextEdit that dynamically resizes its height to the
@@ -49,6 +50,7 @@ The widget that contains/displays all fields for events.
 Methods of note:
  - EventPanel(), the constructor
  - clear(), clear all the fields
+ - delete(), deletes the current event
 """
 class EventPanel(QScrollArea):
     nameField = None
@@ -57,6 +59,13 @@ class EventPanel(QScrollArea):
 
     def __init__(self):
         super().__init__()
+
+        addButton = QPushButton("Add")
+        deleteButton = QPushButton("Delete")
+        deleteButton.clicked.connect(self.delete)
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(addButton)
+        buttonLayout.addWidget(deleteButton)
 
         nameLabel = QLabel("Name")
         self.nameField = EventField()
@@ -82,6 +91,8 @@ class EventPanel(QScrollArea):
         spacing = 20
         mainVbox = QVBoxLayout()
         mainVbox.setSizeConstraint(QLayout.SetMinAndMaxSize)
+        mainVbox.addLayout(buttonLayout)
+        mainVbox.addSpacing(spacing)
         mainVbox.addWidget(nameLabel)
         mainVbox.addWidget(self.nameField)
         mainVbox.addSpacing(spacing)
@@ -118,7 +129,9 @@ class EventPanel(QScrollArea):
                            "QTimeEdit::up-button { image: url(icons/up-arrow.svg) }"
                            "QTimeEdit::down-button { image: url(icons/down-arrow.svg) }"
                            "QTimeEdit::up-button:disabled { image: url(icons/up-arrow-disabled.svg) }"
-                           "QTimeEdit::down-button:disabled { image: url(icons/down-arrow-disabled.svg) }")
+                           "QTimeEdit::down-button:disabled { image: url(icons/down-arrow-disabled.svg) }"
+
+                           "QPushButton { border: 1px solid #424242; color: #DBDBDB; font-size: 20px }")
 
         self.setWidget(mainWidget)
         self.setWidgetResizable(True)
@@ -127,3 +140,7 @@ class EventPanel(QScrollArea):
         self.nameField.clear()
         self.locationField.clear()
         self.notesField.clear()
+
+    # Unfinished
+    def delete(self):
+        self.clear()
