@@ -56,6 +56,9 @@ class EventPanel(QScrollArea):
     nameField = None
     locationField = None
     notesField = None
+    durationGroupBox = None
+    fromField = None
+    toField = None
 
     def __init__(self):
         super().__init__()
@@ -76,17 +79,17 @@ class EventPanel(QScrollArea):
         notesLabel = QLabel("Notes")
         self.notesField = EventField()
 
-        durationGroupBox = QGroupBox("All Day")
-        fromField = QTimeEdit(QTime(12, 0))
+        self.durationGroupBox = QGroupBox("All Day")
+        self.fromField = QTimeEdit(QTime(12, 0))
         toLabel = QLabel("to")
-        toField = QTimeEdit(QTime(13, 0))
+        self.toField = QTimeEdit(QTime(13, 0))
         durationGroupBoxLayout = QHBoxLayout()
-        durationGroupBoxLayout.addWidget(fromField, 0, Qt.AlignLeft)
+        durationGroupBoxLayout.addWidget(self.fromField, 0, Qt.AlignLeft)
         durationGroupBoxLayout.addWidget(toLabel, 0, Qt.AlignHCenter)
-        durationGroupBoxLayout.addWidget(toField, 0, Qt.AlignRight)
-        durationGroupBox.setLayout(durationGroupBoxLayout)
-        durationGroupBox.setCheckable(True)
-        durationGroupBox.setChecked(True)
+        durationGroupBoxLayout.addWidget(self.toField, 0, Qt.AlignRight)
+        self.durationGroupBox.setLayout(durationGroupBoxLayout)
+        self.durationGroupBox.setCheckable(True)
+        self.durationGroupBox.setChecked(True)
 
         spacing = 20
         mainVbox = QVBoxLayout()
@@ -102,7 +105,7 @@ class EventPanel(QScrollArea):
         mainVbox.addWidget(notesLabel)
         mainVbox.addWidget(self.notesField)
         mainVbox.addSpacing(spacing)
-        mainVbox.addWidget(durationGroupBox)
+        mainVbox.addWidget(self.durationGroupBox)
         mainVbox.addStretch()
 
         mainWidget = QWidget()
@@ -140,6 +143,9 @@ class EventPanel(QScrollArea):
         self.nameField.clear()
         self.locationField.clear()
         self.notesField.clear()
+        self.durationGroupBox.setChecked(True)
+        self.fromField.setTime(QTime(12, 0))
+        self.toField.setTime(QTime(13, 0))
 
     # Unfinished
     def delete(self):
