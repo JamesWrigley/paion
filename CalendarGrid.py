@@ -93,7 +93,7 @@ class CalendarGrid(QWidget):
         self.currentDay = day
 
     def setMonth(self, month):
-        assert all(type(element) == list for element in month)
+        assert all(type(week) == list for week in month)
 
         # Clear the grid
         for i in reversed(range(self.mainLayout.count())):
