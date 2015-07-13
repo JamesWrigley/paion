@@ -63,10 +63,12 @@ class EventPanel(QScrollArea):
     def __init__(self):
         super().__init__()
 
+        saveButton = QPushButton("Save")
         addButton = QPushButton("Add")
         deleteButton = QPushButton("Delete")
         deleteButton.clicked.connect(self.delete)
         buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(saveButton)
         buttonLayout.addWidget(addButton)
         buttonLayout.addWidget(deleteButton)
 
