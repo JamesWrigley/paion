@@ -26,10 +26,8 @@ Methods of note:
 """
 class Day(QFrame):
     isNull = False
-    dayLabel = None
     isSelected = False
     defaultStylesheet = ""
-    backgroundColor = "pink"
     selected = pyqtSignal(QFrame)
 
     def __init__(self, day):
@@ -37,14 +35,14 @@ class Day(QFrame):
         super().__init__()
 
         self.isNull = str(day) == "0"
-        self.dayLabel = QLabel("" if self.isNull else str(day))
+        dayLabel = QLabel("" if self.isNull else str(day))
 
         mainVbox = QVBoxLayout()
         mainVbox.setAlignment(Qt.AlignCenter)
-        mainVbox.addWidget(self.dayLabel)
+        mainVbox.addWidget(dayLabel)
 
-        self.backgroundColor = "#319973" if self.isNull else "#6ED5AF"
-        self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(self.backgroundColor)
+        backgroundColor = "#319973" if self.isNull else "#6ED5AF"
+        self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(backgroundColor)
         self.setStyleSheet(self.defaultStylesheet)
         self.setLayout(mainVbox)
 
