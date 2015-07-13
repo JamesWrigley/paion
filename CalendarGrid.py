@@ -76,8 +76,9 @@ Methods of note:
  - setMonth(), takes in a list of weeks and applies it to the grid
 """
 class CalendarGrid(QWidget):
+    currentDay = -1
+    monthModel = []
     mainLayout = None
-    currentDay = None
 
     def __init__(self):
         super().__init__()
@@ -86,21 +87,24 @@ class CalendarGrid(QWidget):
         self.setLayout(self.mainLayout)
 
     def onSelectionChanged(self, day):
-        if self.currentDay is not None and day is not self.currentDay:
-            self.currentDay.isSelected = False
-            self.currentDay.leaveEvent(None)
+        dayIndex = self.mainLayout.indexOf(day)
+        if self.currentDay != -1 and dayIndex != self.currentDay:
+            self.monthModel[self.currentDay].isSelected = False
+            self.monthModel[self.currentDay].leaveEvent(None)
 
-        self.currentDay = day
+        self.currentDay = dayIndex
 
     def setMonth(self, month):
         assert all(type(week) == list for week in month)
 
-        # Clear the grid
-        for i in reversed(range(self.mainLayout.count())):
-            self.mainLayout.itemAt(i).widget().setParent(None)
+        # Clear the grid and the month model
+        while self.mainLayout.count():
+            self.mainLayout.itemAt(self.mainLayout.count() - 1).widget().setParent(None)
+        self.monthModel.clear()
 
         for i, week in enumerate(month):
             for j, day in enumerate(week):
                 cell = Day(day)
+                self.monthModel.append(cell)
                 cell.selected.connect(self.onSelectionChanged)
                 self.mainLayout.addWidget(cell, i, j)
