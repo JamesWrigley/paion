@@ -16,8 +16,9 @@
 #                                                                                #
 ##################################################################################
 
+from Event import Event
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QVBoxLayout
+from PyQt5.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QScrollArea, QVBoxLayout
 
 """
 A class that represents each cell of CalendarGrid.
@@ -29,26 +30,38 @@ class Day(QFrame):
     isSelected = False
     defaultStylesheet = ""
     selected = pyqtSignal(QFrame)
+    scrollArea = None
 
     def __init__(self, day):
         assert type(day) == int or type(day) == str
         super().__init__()
 
         self.isNull = str(day) == "0"
+        self.scrollArea = QScrollArea()
         dayLabel = QLabel("" if self.isNull else str(day))
 
-        mainVbox = QVBoxLayout()
-        mainVbox.setAlignment(Qt.AlignCenter)
-        mainVbox.addWidget(dayLabel)
+        mainLayout = QVBoxLayout()
+        mainLayout.setAlignment(Qt.AlignBaseline)
+        mainLayout.setContentsMargins(0, 0, 0, 0)
+        mainLayout.addWidget(dayLabel)
+
+        eventsWidget = QWidget()
+        eventsLayout = QVBoxLayout()
+        eventsLayout.addLayout(Event("The Great Quux"))
+        eventsLayout.addLayout(Event("Fedora 15 ate my dingoes baby"))
+        eventsWidget.setLayout(eventsLayout)
+        self.scrollArea.setWidget(eventsWidget)
+
+        mainLayout.addWidget(self.scrollArea)
 
         backgroundColor = "#319973" if self.isNull else "#6ED5AF"
         self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(backgroundColor)
         self.setStyleSheet(self.defaultStylesheet)
-        self.setLayout(mainVbox)
+        self.setLayout(mainLayout)
 
     def enterEvent(self, event):
         if not self.isNull and not self.isSelected:
-            self.setStyleSheet("QFrame { background: #84FFD2; font-size: 20px }")
+            self.setStyleSheet("QFrame { background: #84FFD2; font-size: 18px }")
 
     def leaveEvent(self, event):
         if not self.isNull and not self.isSelected:
@@ -59,7 +72,7 @@ class Day(QFrame):
             self.isSelected = not self.isSelected
 
             if self.isSelected:
-                self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 20px }")
+                self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 18px }")
                 self.selected.emit(self)
 
     def mouseReleaseEvent(self, event):
