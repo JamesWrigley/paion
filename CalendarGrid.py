@@ -29,6 +29,8 @@ class Day(QFrame):
     isNull = False
     isSelected = False
     defaultStylesheet = ""
+    enteredStylesheet = ""
+    selectedStylesheet = ""
     selected = pyqtSignal(QFrame)
     scrollArea = None
 
@@ -37,31 +39,44 @@ class Day(QFrame):
         super().__init__()
 
         self.isNull = str(day) == "0"
-        self.scrollArea = QScrollArea()
         dayLabel = QLabel("" if self.isNull else str(day))
 
         mainLayout = QVBoxLayout()
-        mainLayout.setAlignment(Qt.AlignBaseline)
+        mainLayout.setAlignment(Qt.AlignCenter)
         mainLayout.setContentsMargins(0, 0, 0, 0)
         mainLayout.addWidget(dayLabel)
 
         eventsWidget = QWidget()
         eventsLayout = QVBoxLayout()
-        eventsLayout.addLayout(Event("The Great Quux"))
-        eventsLayout.addLayout(Event("Fedora 15 ate my dingoes baby"))
+        eventsLayout.addWidget(Event("The Great Quux"))
+        eventsLayout.addWidget(Event("Fedora 15 ate my dingoes baby"))
         eventsWidget.setLayout(eventsLayout)
+
+        self.scrollArea = QScrollArea()
         self.scrollArea.setWidget(eventsWidget)
+        self.scrollArea.setWidgetResizable(True)
 
         mainLayout.addWidget(self.scrollArea)
 
         backgroundColor = "#319973" if self.isNull else "#6ED5AF"
-        self.defaultStylesheet = "QFrame {{ background: {0}; font-size: 18px }}".format(backgroundColor)
+        scrollBarStyle = ("QScrollBar { background: #333333 }"
+                          "QScrollBar::handle { background: #636363 }"
+                          "QScrollBar::handle:hover { background: #737373 }"
+                          "QScrollBar::up-arrow, QScrollBar::down-arrow, "
+                          "QScrollBar::left-arrow, QScrollBar::right-arrow, "
+                          "QScrollBar::sub-line, QScrollBar::add-line { background: transparent }")
+
+        self.defaultStylesheet = ("QWidget {{ background: {0}; font-size: 18px }}".format(backgroundColor) +
+                                  scrollBarStyle)
+        self.enteredStylesheet = "QWidget { background: #84FFD2; font-size: 18px }" + scrollBarStyle
+        self.selectedStylesheet = "QWidget { background: #FFAAAA; font-size: 18px }" + scrollBarStyle
         self.setStyleSheet(self.defaultStylesheet)
+
         self.setLayout(mainLayout)
 
     def enterEvent(self, event):
         if not self.isNull and not self.isSelected:
-            self.setStyleSheet("QFrame { background: #84FFD2; font-size: 18px }")
+            self.setStyleSheet(self.enteredStylesheet)
 
     def leaveEvent(self, event):
         if not self.isNull and not self.isSelected:
@@ -72,7 +87,7 @@ class Day(QFrame):
             self.isSelected = not self.isSelected
 
             if self.isSelected:
-                self.setStyleSheet("QFrame { background: #FFAAAA; font-size: 18px }")
+                self.setStyleSheet(self.selectedStylesheet)
                 self.selected.emit(self)
 
     def mouseReleaseEvent(self, event):

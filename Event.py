@@ -16,9 +16,11 @@
 #                                                                                #
 ##################################################################################
 
-from PyQt5.QtWidgets import QLabel, QVBoxLayout
+from random import randint
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLabel, QFrame, QVBoxLayout
 
-class Event(QVBoxLayout):
+class Event(QFrame):
     nameLabel = None
     location = ""
     notes = ""
@@ -34,9 +36,16 @@ class Event(QVBoxLayout):
         self.notes = Notes
         self.allDay = AllDay
 
-        self.nameLabel.setStyleSheet("QLabel { border: 1px solid black;"
-                                     "border-left: 0px;"
-                                     "border-right: 0px;"
-                                     "font-size: 10px }")
+        # This is temporary, for testing. Eventually the color will be user-set
+        randGenerator = lambda: randint(0, 255)
+        color = "#%02X%02X%02X" % (randGenerator(), randGenerator(), randGenerator())
+        self.nameLabel.setStyleSheet("QFrame {{ background-color: {0}; border-left: 0px;"
+                                     "border-right: 0px; font-size: 10px }}".format(color))
+
         self.nameLabel.setWordWrap(True)
-        self.addWidget(self.nameLabel)
+        self.nameLabel.setAlignment(Qt.AlignCenter)
+
+        mainLayout = QVBoxLayout()
+        mainLayout.addWidget(self.nameLabel)
+        mainLayout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(mainLayout)
